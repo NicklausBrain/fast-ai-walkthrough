@@ -2,14 +2,14 @@
 # pip install -U fastcore
 # pip install -U fastai
 
-from duckduckgo_search import ddg_images
+from duckduckgo_search import DDGS
 from fastdownload import download_url
 from fastcore.all import *
 from fastai.vision.all import *
 
 def search_images(term, max_images=30):
     print(f"Searching for '{term}'")
-    return L(ddg_images(term, max_results=max_images)).itemgot('image')
+    return L(DDGS().images(keywords=term, max_results=max_images)).itemgot('image')
 
 searches = 'wild animal','boxer dog'
 path = Path('boxer-dog_or_not')
@@ -17,6 +17,8 @@ from time import sleep
 
 for o in searches:
     dest = (path/o)
+    if(dest.exists()):
+        break
     dest.mkdir(exist_ok=True, parents=True)
     download_images(dest, urls=search_images(f'{o} photo'))
     sleep(10)  # Pause between searches to avoid over-loading server
@@ -49,7 +51,6 @@ dls.show_batch(max_n=6)
 
 learn = vision_learner(dls, resnet18, metrics=error_rate)
 learn.fine_tune(3)
-
 
 ### Positive test
 dest = 'boxer-dog.jpg'
