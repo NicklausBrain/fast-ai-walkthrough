@@ -53,10 +53,10 @@ learn = vision_learner(dls, resnet18, metrics=error_rate)
 learn.fine_tune(3)
 
 ### Positive test
-dest = 'boxer-dog.jpg'
-urls = search_images('boxer puppy going crazy', max_images=1)
-urls[0]
-download_url(urls[0], dest, show_progress=True)
+dest = Path('boxer-dog.jpg')
+if(not dest.exists()):
+    urls = search_images('boxer puppy going crazy', max_images=1)
+    download_url(urls[0], dest, show_progress=True)
 
 im = Image.open(dest)
 im.to_thumb(256,256)
@@ -65,9 +65,11 @@ print(f"This is a: {is_boxer}.")
 print(f"Probability it's a boxer: {probs[0]:.4f}")
 
 ### Negative test
-destX = 'chihuahua.jpg'
-urlsX = search_images('chihuahua', max_images=10)
-download_url(urlsX[1], destX, show_progress=False)
+destX = Path('chihuahua.jpg')
+if(not destX.exists()):
+    urlsX = search_images('chihuahua', max_images=10)
+    download_url(urlsX[1], destX, show_progress=False)
+
 imX = Image.open(destX)
 imX.to_thumb(256,256)
 
