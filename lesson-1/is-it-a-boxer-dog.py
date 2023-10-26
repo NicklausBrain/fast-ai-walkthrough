@@ -76,3 +76,7 @@ imX.to_thumb(256,256)
 is_boxerX,_,probsX = learn.predict(PILImage.create(destX))
 print(f"This is a: {is_boxerX}.")
 print(f"Probability it's a boxer: {probsX[0]:.4f}")
+
+print('---------------------\n')
+learn.save("is-boxer-model")
+# load_learner
